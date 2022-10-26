@@ -1,0 +1,83 @@
+{% extends 'admin_panel/base.html' %}
+{% load static %}
+
+{% block content %}
+    <!-- Page Content-->
+    <div class="page-content">
+
+        <div class="container-fluid">
+            <!-- Page-Title -->
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="page-title-box">
+                        <div class="row">
+                            <div class="col">
+                                <h4 class="page-title">Subjects</h4>
+                                <ol class="breadcrumb">
+                                    <li class="breadcrumb-item"><a href="javascript:void(0);">Dashboard</a></li>
+                                    <li class="breadcrumb-item active">Subjects </li>
+                                </ol>
+                            </div><!--end col-->
+                            <div class="col-auto col-sm-2 float-right ml-auto">
+                                <form method="get" action="">
+                                    <li class="list-inline-item">
+                                        <div class="input-group">
+
+                                            <input name="q" type="text" placeholder="Search" value="{{ filter_data.q }}"
+                                                class="form-control" />
+                                            <span class="input-group-append">
+                                                <button type="button" class="btn btn-soft-primary btn-sm"><i
+                                                        class="fas fa-search"></i></button>
+                                            </span>
+                                        </div>
+                                    </li>
+                                </form>
+                            </div>
+                            <div class="col-auto align-self-center">
+                                <a class="btn btn-primary btn-sm text-white px-4 d-inline-block"  href="{% url 'user:create_subject' %}" ><i class="mdi mdi-plus mr-2"></i>Subject</a>
+                            </div>
+                        </div><!--end row-->
+                    </div><!--end page-title-box-->
+                </div><!--end col-->
+            </div><!--end row-->
+            <!-- end page title end breadcrumb -->
+
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="table-responsive">
+                            <table id="datatable" class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                                <thead>
+
+                                    <tr>
+                                        <th>SL.No</th>
+                                        <th>Name</th>
+                                        <th class="action">action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for instance in instances %}
+                                    <tr>
+                                        <td>{{forloop.counter}}</td>
+                                        <td>{{instance.name}}</td>
+
+                                        <td class="action">
+                                            <a href="{% url 'user:edit_subject' pk=instance.pk %}"><i class="las la-pen text-info font-18"></i></a>
+                                            <a class="action-button remove btn btn-default btn-icon" style="padding:0;"
+                                                data-id="{{instance.pk}}" data-text="{{confirm_delete_message}}" data-title="Are you sure?" href="{% url 'user:delete_subject' pk=instance.pk %}"><i class="las la-trash-alt text-danger font-18"></i></a>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+
+                                </tbody>
+                            </table>
+                            <!--end /table-->
+                        </div>
+                        <!--end /tableresponsive-->
+                        <!-- pagination -->
+                    </div> <!-- end col -->
+                </div>
+            </div>
+        </div><!-- container -->
+    <!-- end page content -->
+{% endblock content %}
