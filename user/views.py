@@ -24,8 +24,8 @@ def login(request):
 
     if request.method == 'POST':
         # form = LoginForm(request.POST,request.FILES)
-        email = request.GET.get(username)
-        password = request.GET.get(password)
+        email = request.POST['username']
+        password = request.POST["password"]
 
         if email and password:
             user = authenticate(username=email, password=password)
