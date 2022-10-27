@@ -4,7 +4,7 @@ import json
 from django.urls import reverse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth.models import User,Group
-from django.contrib.auth import authenticate,login,logout
+from django.contrib.auth import login as auth_login, authenticate, logout as logoutUser
 from django.http import HttpResponse, HttpResponseRedirect
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
@@ -26,18 +26,19 @@ def login(request):
         # form = LoginForm(request.POST,request.FILES)
         email = request.POST['username']
         password = request.POST["password"]
+        print(email,password,'iiiiiiiiii--------------------')
 
         if email and password:
             user = authenticate(username=email, password=password)
 
             if user is not None:
-                login(request,user)
+                auth_login(request,user)
 
-                if User.objects.filter(id=request.user.id,is_active=True,groups__name="admin").exists():
+                if User.objects.filter(id=request.user.id,groups__name="admin").exists():
                     print("admin")
                     return HttpResponseRedirect(reverse('user:admin_dashboard'))
 
-                if User.objects.filter(id=request.user.id,is_active=True,groups__name="student").exists():
+                if User.objects.filter(id=request.user.id,groups__name="student").exists():
                     print("student")
                     return HttpResponseRedirect(reverse('student:student_dashboard'))
         else:
@@ -61,7 +62,7 @@ def login(request):
 
 def logout(request):
     logout(request)
-    return HttpResponseRedirect(reverse('user:login'))
+    return render(request, "registration/login.html")
 
 
 def admin_registration(request):
